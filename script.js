@@ -1,64 +1,50 @@
-import * as THREE from "./build/three.module.js";
-
-let camera, scene, renderer;
-
-
-
-init()
+window.addEventListener('DOMContentLoaded', init);
 
 function init() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-  //カメラ
-  camera = new THREE.PerspectiveCamera(
-    40,
-    window.innerWidth / window.innerHeight,
-    1,
-    15000
-  );
-  camera.position.z = 250;
-
-
-  // geometry
-  const size = 250;
-
-  const geometry = new THREE.BoxGeometry(size, size, size);
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    specular: 0xffffff, //鏡面反射
-    shininess: 50, //輝度
+  // レンダラーを作成
+  const renderer = new THREE.WebGLRenderer({
+    canvas: document.querySelector('#myCanvas')
   });
-
-  for (let i = 0; i < 2500; i++) {
-    const mesh = new THREE.Mesh(geometry, material);
-
-    //位置をランダムに決める
-    mesh.position.x = 8000 * (2.0 * Math.random() - 1.0);
-    mesh.position.y = 8000 * (2.0 * Math.random() - 1.0);
-    mesh.position.z = 8000 * (2.0 * Math.random() - 1.0);
-
-    //回転度合をランダムに決める
-    mesh.rotation.x = Math.random() * Math.PI;
-    mesh.rotation.y = Math.random() * Math.PI;
-    mesh.rotation.z = Math.random() * Math.PI;
-
-    mesh.matrixAutoUpdate = false; //自動で行列計算されるのを制御する
-    mesh.updateMatrix(); //手動で行列更新する。
-
-    scene.add(mesh);
-  }
-
-  //平行光線
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.03);
-  dirLight.position.set(0, -1, 0).normalize(); //Y軸下方向から光源が出てる。
-  dirLight.color.setHSL(0.1, 0.7, 0.5);
-  scene.add(dirLight);
-
-  // renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  container.appendChild(renderer.domElement);
-  //
-}
 
+  // シーンを作成
+  const scene = new THREE.Scene();
+
+  // カメラを作成
+  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+  // カメラの初期座標を設定（X座標:0, Y座標:0, Z座標:0）
+  camera.position.set(0, 0, 1000);
+
+  // 箱を作成
+  const geometry = new THREE.BoxGeometry(500, 500, 500);
+  const material = new THREE.MeshStandardMaterial({ color: 0x0000FF });
+  const box = new THREE.Mesh(geometry, material);
+  scene.add(box);
+
+  // 平行光源
+  const light = new THREE.DirectionalLight(0xFFFFFF);
+  light.intensity = 2; // 光の強さを倍に
+  light.position.set(1, 1, 1); // ライトの方向
+  // シーンに追加
+  scene.add(light);
+
+  // レンダリング
+  // renderer.render(scene, camera);
+  // 初回実行
+  tick();
+
+  function tick() {
+    requestAnimationFrame(tick);
+
+    // 箱を回転させる
+    box.rotation.x += 0.01;
+    box.rotation.y += 0.01;
+
+    // レンダリング
+    renderer.render(scene, camera);
+  }
+}
