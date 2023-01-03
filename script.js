@@ -8,20 +8,29 @@ function init() {
   const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#myCanvas')
   });
+  renderer.setClearColor(new THREE.Color(0x222333))
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   // シーンを作成
   const scene = new THREE.Scene();
 
+  // axisHelper
+  // const axesHelper = new THREE.AxesHelper(5);
+  // scene.add(axesHelper);
+
   // カメラを作成
-  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   // カメラの初期座標を設定（X座標:0, Y座標:0, Z座標:0）
   camera.position.set(0, 0, 1000);
 
+  // Plane
+
+
   // 箱を作成
-  const geometry = new THREE.BoxGeometry(500, 500, 500);
-  const material = new THREE.MeshStandardMaterial({ color: 0x0000FF });
+  const boxSize = 250
+  const geometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+  const material = new THREE.MeshStandardMaterial({ color: 0x00ccee });
   const box = new THREE.Mesh(geometry, material);
   scene.add(box);
 
@@ -33,18 +42,17 @@ function init() {
   scene.add(light);
 
   // レンダリング
-  // renderer.render(scene, camera);
+
   // 初回実行
   tick();
-
   function tick() {
     requestAnimationFrame(tick);
-
     // 箱を回転させる
     box.rotation.x += 0.01;
     box.rotation.y += 0.01;
 
     // レンダリング
-    renderer.render(scene, camera);
   }
+
+  renderer.render(scene, camera);
 }
