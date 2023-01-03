@@ -1,0 +1,34 @@
+{
+	"files": [
+		{
+			"path": "script.js",
+			"bookmarks": [
+				{
+					"line": 21,
+					"column": 21,
+					"label": ""
+				},
+				{
+					"line": 29,
+					"column": 19,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "index.html",
+			"bookmarks": [
+				{
+					"line": 9,
+					"column": 7,
+					"label": ""
+				},
+				{
+					"line": 16,
+					"column": 7,
+					"label": ""
+				}
+			]
+		}
+	]
+}
